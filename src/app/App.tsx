@@ -1,12 +1,16 @@
 import './App.css'
 import {createTheme, ThemeProvider} from '@mui/material/styles'
-import {useState} from 'react'
 import {useAppDispatch} from '../common/hooks/useAppDispatch'
 import {useAppSelector} from '../common/hooks/useAppSelector'
 import {CreateItemForm} from '../CreateItemForm'
 import {changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTaskAC} from '../model/tasks-reducer'
 import {selectTasks} from '../model/tasks-selectors'
-import {changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC} from '../model/todolists-reducer'
+import {
+  changeTodolistFilterAC,
+  changeTodolistTitleAC,
+  createTodolistAC,
+  deleteTodolistAC
+} from '../model/todolists-reducer'
 import {selectTodolists} from '../model/todolists-selectors'
 import {TodolistItem} from '../TodolistItem'
 import AppBar from '@mui/material/AppBar'
@@ -38,8 +42,6 @@ export type Task = {
 export type FilterValues = 'all' | 'active' | 'completed'
 
 export type TasksState = Record<string, Task[]>
-
-type ThemeMode = 'dark' | 'light'
 
 export const App = () => {
   const todolists = useAppSelector(selectTodolists)

@@ -13,4 +13,4 @@ export const appReducer = createReducer(initialState, builder => {
     })
 })
 
-type ThemeMode = 'dark' | 'light'
+export type ThemeMode = 'dark' | 'light'
