@@ -23,7 +23,7 @@ type Props = {
 
 export const TodolistItem = ({todolist}: Props) => {
   const {
-    id, title, filter
+    id, filter
   } = todolist
 
   const todolistTasks = tasks[todolist.id]
@@ -41,29 +41,17 @@ export const TodolistItem = ({todolist}: Props) => {
     changeFilter(id, filter)
   }
 
-  const deleteTodolistHandler = () => {
-    deleteTodolist(id)
-  }
-
-  const changeTodolistTitleHandler = (title: string) => {
-    // changeTodolistTitle(id, title)
-    dispatch(changeTodolistTitleAC({id, title}))
-  }
-
   const createTaskHandler = (title: string) => {
     dispatch(createTaskAC({todolistId: id, title}))
   }
 
+  const changeTaskTitleHandler = (title: string) => {
+    dispatch(changeTaskTitleAC({id, title}))
+  }
+
   return (
       <div>
-        <div className={'container'}>
-          <h3>
-            <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
-          </h3>
-          <IconButton onClick={deleteTodolistHandler}>
-            <DeleteIcon />
-          </IconButton>
-        </div>
+
         <CreateItemForm onCreateItem={createTaskHandler}/>
         {filteredTasks.length === 0 ? (
             <p>Тасок нет</p>
@@ -79,9 +67,7 @@ export const TodolistItem = ({todolist}: Props) => {
                   dispatch(changeTaskStatusAC({todolistId: id, taskId: task.id, isDone: newStatusValue}))
                 }
 
-                const changeTaskTitleHandler = (title: string) => {
-                  dispatch(changeTaskTitleAC({todolistId: id, taskId: task.id, title}))
-                }
+
 
                 return (
                     <ListItem key={task.id} sx={getListItemSx(task.isDone)}>
