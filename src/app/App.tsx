@@ -20,6 +20,7 @@ import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 import {containerSx} from '../TodolistItem.styles'
 import {NavButton} from '../NavButton'
+import {selectThemeMode} from "./app-selectors.ts";
 
 export type Todolist = {
   id: string
@@ -42,10 +43,9 @@ type ThemeMode = 'dark' | 'light'
 export const App = () => {
   const todolists = useAppSelector(selectTodolists)
   const tasks = useAppSelector(selectTasks)
+  const themeMode = useAppSelector(selectThemeMode)
 
   const dispatch = useAppDispatch()
-
-  const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 
   const theme = createTheme({
     palette: {
