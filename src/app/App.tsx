@@ -21,6 +21,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import {containerSx} from '../TodolistItem.styles'
 import {NavButton} from '../NavButton'
 import {selectThemeMode} from "./app-selectors.ts";
+import {changeThemeModeAC} from "./app-reducer.ts";
 
 export type Todolist = {
   id: string
@@ -57,7 +58,7 @@ export const App = () => {
   })
 
   const changeMode = () => {
-    setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+    dispatch(changeThemeModeAC({themeMode: themeMode === 'light' ? 'dark' : 'light'}))
   }
 
   const changeFilter = (todolistId: string, filter: FilterValues) => {
