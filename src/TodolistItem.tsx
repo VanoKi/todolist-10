@@ -1,3 +1,5 @@
+import {useAppDispatch} from '@/common/hooks/useAppDispatch'
+import {changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC} from '@/model/tasks-reducer'
 import type {ChangeEvent} from 'react'
 import type {FilterValues, Task, Todolist} from './app/App'
 import {CreateItemForm} from './CreateItemForm'
@@ -10,18 +12,13 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import {containerSx, getListItemSx} from './TodolistItem.styles'
-import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
-import {changeTaskTitleAC, deleteTaskAC} from "@/model/tasks-reducer.ts";
 
 type Props = {
   todolist: Todolist
   tasks: Task[]
-  deleteTask: (todolistId: string, taskId: string) => void
   changeFilter: (todolistId: string, filter: FilterValues) => void
   createTask: (todolistId: string, title: string) => void
-  changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
   deleteTodolist: (todolistId: string) => void
-  changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
   changeTodolistTitle: (todolistId: string, title: string) => void
 }
 
@@ -29,10 +26,8 @@ export const TodolistItem = (props: Props) => {
   const {
     todolist: {id, title, filter},
     tasks,
-    deleteTask,
     changeFilter,
     createTask,
-    changeTaskStatus,
     deleteTodolist,
     changeTodolistTitle,
   } = props
@@ -72,13 +67,12 @@ export const TodolistItem = (props: Props) => {
             <List>
               {tasks.map(task => {
                 const deleteTaskHandler = () => {
-                  deleteTask(id, task.id)
-                  dispatch(deleteTaskAC({todolistId: id, taskId:  task.id}))
+                  dispatch(deleteTaskAC({todolistId: id, taskId: task.id}))
                 }
 
                 const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                   const newStatusValue = e.currentTarget.checked
-                  changeTaskStatus(id, task.id, newStatusValue)
+                  dispatch(changeTaskStatusAC({todolistId: id, taskId: task.id, isDone: newStatusValue}))
                 }
 
                 const changeTaskTitleHandler = (title: string) => {

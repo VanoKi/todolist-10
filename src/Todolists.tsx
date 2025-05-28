@@ -1,16 +1,15 @@
-import Grid from "@mui/material/Grid2";
-import Paper from "@mui/material/Paper";
-import {TodolistItem} from "@/TodolistItem.tsx";
-import {changeTodolistFilterAC, changeTodolistTitleAC, deleteTodolistAC} from "@/model/todolists-reducer.ts";
-import {changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTaskAC} from "@/model/tasks-reducer.ts";
-import {FilterValues} from "@/app/App.tsx";
-import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
-import {useAppSelector} from "@/common/hooks/useAppSelector.ts";
-import {selectTodolists} from "@/model/todolists-selectors.ts";
-import {selectTasks} from "@/model/tasks-selectors.ts";
+import type {FilterValues} from '@/app/App'
+import {useAppDispatch} from '@/common/hooks/useAppDispatch'
+import {useAppSelector} from '@/common/hooks/useAppSelector'
+import {createTaskAC} from '@/model/tasks-reducer'
+import {selectTasks} from '@/model/tasks-selectors'
+import {changeTodolistFilterAC, changeTodolistTitleAC, deleteTodolistAC} from '@/model/todolists-reducer'
+import {selectTodolists} from '@/model/todolists-selectors'
+import {TodolistItem} from '@/TodolistItem'
+import Grid from '@mui/material/Grid2'
+import Paper from '@mui/material/Paper'
 
 export const Todolists = () => {
-
   const todolists = useAppSelector(selectTodolists)
   const tasks = useAppSelector(selectTasks)
 
@@ -28,48 +27,35 @@ export const Todolists = () => {
     dispatch(changeTodolistTitleAC({id: todolistId, title}))
   }
 
-  const deleteTask = (todolistId: string, taskId: string) => {
-    dispatch(deleteTaskAC({todolistId, taskId}))
-  }
-
   const createTask = (todolistId: string, title: string) => {
     dispatch(createTaskAC({todolistId, title}))
   }
 
-  const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-    dispatch(changeTaskStatusAC({todolistId, taskId, isDone}))
-  }
-
-  // const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
-  //   dispatch(changeTaskTitleAC({todolistId, taskId, title}))
-  // }
-
   return (
-    <>
-      {todolists.map(todolist => {
-        const todolistTasks = tasks[todolist.id]
-        let filteredTasks = todolistTasks
-        if (todolist.filter === 'active') {
-          filteredTasks = todolistTasks.filter(task => !task.isDone)
-        }
-        if (todolist.filter === 'completed') {
-          filteredTasks = todolistTasks.filter(task => task.isDone)
-        }
+      <>
+        {todolists.map(todolist => {
+          const todolistTasks = tasks[todolist.id]
+          let filteredTasks = todolistTasks
+          if (todolist.filter === 'active') {
+            filteredTasks = todolistTasks.filter(task => !task.isDone)
+          }
+          if (todolist.filter === 'completed') {
+            filteredTasks = todolistTasks.filter(task => task.isDone)
+          }
 
-        return (
-          <Grid key={todolist.id}>
-            <Paper sx={{p: '0 20px 20px 20px'}}>
-              <TodolistItem todolist={todolist}
-                            tasks={filteredTasks}
-                            changeFilter={changeFilter}
-                            createTask={createTask}
-                            changeTaskStatus={changeTaskStatus}
-                            deleteTodolist={deleteTodolist}
-                            changeTodolistTitle={changeTodolistTitle}/>
-            </Paper>
-          </Grid>
-        )
-      })}
-    </>
-  );
-};
+          return (
+              <Grid key={todolist.id}>
+                <Paper sx={{p: '0 20px 20px 20px'}}>
+                  <TodolistItem todolist={todolist}
+                                tasks={filteredTasks}
+                                changeFilter={changeFilter}
+                                createTask={createTask}
+                                deleteTodolist={deleteTodolist}
+                                changeTodolistTitle={changeTodolistTitle}/>
+                </Paper>
+              </Grid>
+          )
+        })}
+      </>
+  )
+}
