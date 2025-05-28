@@ -1,6 +1,6 @@
 import {createAction, createReducer} from '@reduxjs/toolkit'
 
-export const deleteTaskAC = createAction<{todolistId: string, taskId: string}>('tasks/deleteTask')
+export const changeThemeModeAC = createAction<{themeMode: ThemeMode}>('app/changeThemeMode')
 
 const initialState = {
   themeMode: 'light' as ThemeMode
@@ -8,8 +8,8 @@ const initialState = {
 
 export const appReducer = createReducer(initialState, builder => {
   builder
-    .addCase(deleteTaskAC, (state, action) => {
-
+    .addCase(changeThemeModeAC, (state, action) => {
+      state.themeMode = action.payload.themeMode
     })
 })
 
