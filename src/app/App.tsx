@@ -26,6 +26,7 @@ import {containerSx} from '../TodolistItem.styles'
 import {NavButton} from '../NavButton'
 import {selectThemeMode} from "./app-selectors.ts";
 import {changeThemeModeAC} from "./app-reducer.ts";
+import {getTheme} from "@/common/theme/theme.ts";
 
 export type Todolist = {
   id: string
@@ -50,14 +51,7 @@ export const App = () => {
 
   const dispatch = useAppDispatch()
 
-  const theme = createTheme({
-    palette: {
-      mode: themeMode,
-      primary: {
-        main: '#087EA4',
-      },
-    },
-  })
+  const theme = getTheme('light')
 
   const changeMode = () => {
     dispatch(changeThemeModeAC({themeMode: themeMode === 'light' ? 'dark' : 'light'}))
