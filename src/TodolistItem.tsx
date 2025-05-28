@@ -1,5 +1,5 @@
 import {useAppDispatch} from '@/common/hooks/useAppDispatch'
-import {changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC} from '@/model/tasks-reducer'
+import {changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTaskAC} from '@/model/tasks-reducer'
 import type {ChangeEvent} from 'react'
 import type {FilterValues, Task, Todolist} from './app/App'
 import {CreateItemForm} from './CreateItemForm'
@@ -12,25 +12,28 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import {containerSx, getListItemSx} from './TodolistItem.styles'
+import {changeTodolistTitleAC} from "@/model/todolists-reducer.ts";
 
 type Props = {
   todolist: Todolist
   tasks: Task[]
   changeFilter: (todolistId: string, filter: FilterValues) => void
-  createTask: (todolistId: string, title: string) => void
   deleteTodolist: (todolistId: string) => void
-  changeTodolistTitle: (todolistId: string, title: string) => void
 }
 
-export const TodolistItem = (props: Props) => {
+export const TodolistItem = ({todolist}: Props) => {
   const {
-    todolist: {id, title, filter},
-    tasks,
-    changeFilter,
-    createTask,
-    deleteTodolist,
-    changeTodolistTitle,
-  } = props
+    id, title, filter
+  } = todolist
+
+  const todolistTasks = tasks[todolist.id]
+  let filteredTasks = todolistTasks
+  if (filter === 'active') {
+    filteredTasks = todolistTasks.filter(task => !task.isDone)
+  }
+  if (filter === 'completed') {
+    filteredTasks = todolistTasks.filter(task => task.isDone)
+  }
 
   const dispatch = useAppDispatch()
 
@@ -43,11 +46,12 @@ export const TodolistItem = (props: Props) => {
   }
 
   const changeTodolistTitleHandler = (title: string) => {
-    changeTodolistTitle(id, title)
+    // changeTodolistTitle(id, title)
+    dispatch(changeTodolistTitleAC({id, title}))
   }
 
   const createTaskHandler = (title: string) => {
-    createTask(id, title)
+    dispatch(createTaskAC({todolistId: id, title}))
   }
 
   return (
@@ -61,11 +65,11 @@ export const TodolistItem = (props: Props) => {
           </IconButton>
         </div>
         <CreateItemForm onCreateItem={createTaskHandler}/>
-        {tasks.length === 0 ? (
+        {filteredTasks.length === 0 ? (
             <p>Тасок нет</p>
         ) : (
             <List>
-              {tasks.map(task => {
+              {filteredTasks.map(task => {
                 const deleteTaskHandler = () => {
                   dispatch(deleteTaskAC({todolistId: id, taskId: task.id}))
                 }
