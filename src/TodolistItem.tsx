@@ -5,14 +5,12 @@ import type {FilterValues, Task, Todolist} from './app/App'
 import {CreateItemForm} from './CreateItemForm'
 import {EditableSpan} from './EditableSpan'
 import Checkbox from '@mui/material/Checkbox'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import {containerSx, getListItemSx} from './TodolistItem.styles'
-import {changeTodolistTitleAC} from "@/model/todolists-reducer.ts";
+import {getListItemSx} from './TodolistItem.styles'
+import {FilterButtons} from "@/FilterButtons.tsx";
 
 type Props = {
   todolist: Todolist
@@ -37,9 +35,6 @@ export const TodolistItem = ({todolist}: Props) => {
 
   const dispatch = useAppDispatch()
 
-  const changeFilterHandler = (filter: FilterValues) => {
-    changeFilter(id, filter)
-  }
 
   const createTaskHandler = (title: string) => {
     dispatch(createTaskAC({todolistId: id, title}))
@@ -83,23 +78,7 @@ export const TodolistItem = ({todolist}: Props) => {
               })}
             </List>
         )}
-        <Box sx={containerSx}>
-          <Button variant={filter === 'all' ? 'outlined' : 'text'}
-                  color={'inherit'}
-                  onClick={() => changeFilterHandler('all')}>
-            All
-          </Button>
-          <Button variant={filter === 'active' ? 'outlined' : 'text'}
-                  color={'primary'}
-                  onClick={() => changeFilterHandler('active')}>
-            Active
-          </Button>
-          <Button variant={filter === 'completed' ? 'outlined' : 'text'}
-                  color={'secondary'}
-                  onClick={() => changeFilterHandler('completed')}>
-            Completed
-          </Button>
-        </Box>
+        <FilterButtons todolist={todolist}/>
       </div>
   )
 }
