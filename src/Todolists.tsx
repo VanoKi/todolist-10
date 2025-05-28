@@ -40,9 +40,9 @@ export const Todolists = () => {
     dispatch(changeTaskStatusAC({todolistId, taskId, isDone}))
   }
 
-  const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
-    dispatch(changeTaskTitleAC({todolistId, taskId, title}))
-  }
+  // const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
+  //   dispatch(changeTaskTitleAC({todolistId, taskId, title}))
+  // }
 
   return (
     <>
@@ -61,12 +61,10 @@ export const Todolists = () => {
             <Paper sx={{p: '0 20px 20px 20px'}}>
               <TodolistItem todolist={todolist}
                             tasks={filteredTasks}
-                            deleteTask={deleteTask}
                             changeFilter={changeFilter}
                             createTask={createTask}
                             changeTaskStatus={changeTaskStatus}
                             deleteTodolist={deleteTodolist}
-                            changeTaskTitle={changeTaskTitle}
                             changeTodolistTitle={changeTodolistTitle}/>
             </Paper>
           </Grid>

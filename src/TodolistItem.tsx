@@ -10,6 +10,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import {containerSx, getListItemSx} from './TodolistItem.styles'
+import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
+import {changeTaskTitleAC, deleteTaskAC} from "@/model/tasks-reducer.ts";
 
 type Props = {
   todolist: Todolist
@@ -32,9 +34,10 @@ export const TodolistItem = (props: Props) => {
     createTask,
     changeTaskStatus,
     deleteTodolist,
-    changeTaskTitle,
     changeTodolistTitle,
   } = props
+
+  const dispatch = useAppDispatch()
 
   const changeFilterHandler = (filter: FilterValues) => {
     changeFilter(id, filter)
@@ -70,6 +73,7 @@ export const TodolistItem = (props: Props) => {
               {tasks.map(task => {
                 const deleteTaskHandler = () => {
                   deleteTask(id, task.id)
+                  dispatch(deleteTaskAC({todolistId: id, taskId:  task.id}))
                 }
 
                 const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +82,7 @@ export const TodolistItem = (props: Props) => {
                 }
 
                 const changeTaskTitleHandler = (title: string) => {
-                  changeTaskTitle(id, task.id, title)
+                  dispatch(changeTaskTitleAC({todolistId: id, taskId: task.id, title}))
                 }
 
                 return (
